@@ -1,13 +1,16 @@
 ﻿using SRTPluginProviderRE2.Structures;
 using System;
+using System.Diagnostics;
 using System.Globalization;
+using System.Reflection;
 
 namespace SRTPluginProviderRE2
 {
     public struct GameMemoryRE2 : IGameMemoryRE2
     {
-        private const string IGT_TIMESPAN_STRING_FORMAT = @"hh\:mm\:ss\.fff";
-
+        private const string IGT_TIMESPAN_STRING_FORMAT = @"hh\:mm\:ss";
+        public string GameName => "RE2R";
+        public string VersionInfo => FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion;
         public long IGTRunningTimer { get => _igtRunningTimer; }
         internal long _igtRunningTimer;
 

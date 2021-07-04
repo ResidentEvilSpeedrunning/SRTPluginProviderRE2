@@ -5,6 +5,8 @@ namespace SRTPluginProviderRE2
 {
     public interface IGameMemoryRE2
     {
+        string GameName { get; }
+        string VersionInfo { get; }
         long IGTRunningTimer { get; }
         long IGTCutsceneTimer { get; }
         long IGTMenuTimer { get; }
