@@ -1,48 +1,45 @@
-﻿using SRTPluginProviderRE2.Structures;
+﻿using SRTPluginProviderRE2.Structs;
+using SRTPluginProviderRE2.Structs.GameStructs;
 using System;
+using System.Diagnostics;
 using System.Globalization;
+using System.Reflection;
 
 namespace SRTPluginProviderRE2
 {
     public struct GameMemoryRE2 : IGameMemoryRE2
     {
-        private const string IGT_TIMESPAN_STRING_FORMAT = @"hh\:mm\:ss\.fff";
+        private const string IGT_TIMESPAN_STRING_FORMAT = @"hh\:mm\:ss";
 
-        public long IGTRunningTimer { get => _igtRunningTimer; }
-        internal long _igtRunningTimer;
+        public string GameName => "RE2R";
 
-        public long IGTCutsceneTimer { get => _igtCutsceneTimer; }
-        internal long _igtCutsceneTimer;
+        public string VersionInfo => FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion;
 
-        public long IGTMenuTimer { get => _igtMenuTimer; }
-        internal long _igtMenuTimer;
+        public GameTimer Timer { get => _timer; }
+        internal GameTimer _timer;
 
-        public long IGTPausedTimer { get => _igtPausedTimer; }
-        internal long _igtPausedTimer;
+        public CharacterEnumeration PlayerCharacter { get => (CharacterEnumeration)_playerCharacter; set => _playerCharacter = (int)value; }
+        internal int _playerCharacter;
 
-        public int PlayerCurrentHealth { get => _playerCurrentHealth; }
-        internal int _playerCurrentHealth;
+        public GamePlayer Player { get => _player; set => _player = value; }
+        internal GamePlayer _player;
 
-        public int PlayerMaxHealth { get => _playerMaxHealth; }
-        internal int _playerMaxHealth;
+        public string PlayerName => string.Format("{0}: ", PlayerCharacter.ToString());
 
-        public bool PlayerPoisoned { get => _playerPoisoned == 0x01; }
-        internal byte _playerPoisoned;
+        public bool IsPoisoned { get => _isPoisoned == 0x01; }
+        internal byte _isPoisoned;
 
-        public int Rank { get => _rank; }
-        internal int _rank;
+        public GameRankManager RankManager { get => _rankManager; }
+        internal GameRankManager _rankManager;
 
-        public float RankScore { get => _rankScore; }
-        internal float _rankScore;
-
-        public InventoryEntry[] PlayerInventory { get => _playerInventory; }
-        internal InventoryEntry[] _playerInventory;
+        public GameInventoryEntry[] PlayerInventory { get => _playerInventory; }
+        internal GameInventoryEntry[] _playerInventory;
 
         public EnemyHP[] EnemyHealth { get => _enemyHealth; }
         internal EnemyHP[] _enemyHealth;
 
         // Public Properties - Calculated
-        public long IGTCalculated => unchecked(IGTRunningTimer - IGTCutsceneTimer - IGTPausedTimer);
+        public long IGTCalculated => unchecked(Timer.IGTRunningTimer - Timer.IGTCutsceneTimer - Timer.IGTPausedTimer);
 
         public long IGTCalculatedTicks => unchecked(IGTCalculated * 10L);
 

@@ -1,5 +1,6 @@
 ﻿using ProcessMemory;
-using SRTPluginProviderRE2.Structures;
+using SRTPluginProviderRE2.Structs;
+using SRTPluginProviderRE2.Structs.GameStructs;
 using System;
 using System.Diagnostics;
 
@@ -7,6 +8,8 @@ namespace SRTPluginProviderRE2
 {
     internal class GameMemoryRE2Scanner : IDisposable
     {
+        private readonly int MAX_ENTITES = 32;
+        private readonly int MAX_ITEMS = 20;
         // Variables
         private ProcessMemoryHandler memoryAccess;
         private GameMemoryRE2 gameMemoryValues;
@@ -24,11 +27,13 @@ namespace SRTPluginProviderRE2
         private IntPtr BaseAddress { get; set; }
         private MultilevelPointer PointerIGT { get; set; }
         private MultilevelPointer PointerRank { get; set; }
+        private MultilevelPointer PointerCharacter { get; set; }
         private MultilevelPointer PointerPlayerHP { get; set; }
         private MultilevelPointer PointerPlayerPoison { get; set; }
         private MultilevelPointer[] PointerInventoryEntries { get; set; }
         private MultilevelPointer[] PointerEnemyEntries { get; set; }
-        
+
+        private GameInventoryEntry EmptySlot = new GameInventoryEntry();
 
         internal GameMemoryRE2Scanner(Process process = null)
         {
@@ -54,12 +59,21 @@ namespace SRTPluginProviderRE2
                 // Setup the pointers.
                 PointerIGT = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressIGT), 0x2E0, 0x218, 0x610, 0x710, 0x60);
                 PointerRank = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressRank));
+                PointerCharacter = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressPlayerInfo), 0x50, 0x88);
                 PointerPlayerHP = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressPlayerInfo), 0x50, 0x20);
                 PointerPlayerPoison = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressPlayerInfo), 0x50, 0x20, 0xF8);
 
-                PointerInventoryEntries = new MultilevelPointer[20];
-                for (int i = 0; i < PointerInventoryEntries.Length; ++i)
+                PointerInventoryEntries = new MultilevelPointer[MAX_ITEMS];
+                gameMemoryValues._playerInventory = new GameInventoryEntry[MAX_ITEMS];
+                for (int i = 0; i < MAX_ITEMS; ++i)
+                {
                     PointerInventoryEntries[i] = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressPlayerInfo), 0x50, 0x98, 0x10, 0x20 + (i * 0x08), 0x18);
+                    gameMemoryValues.PlayerInventory[i] = EmptySlot;
+                }
+
+                gameMemoryValues._enemyHealth = new EnemyHP[MAX_ENTITES];
+                for (int i = 0; i < MAX_ENTITES; ++i)
+                    gameMemoryValues._enemyHealth[i] = new EnemyHP();
 
                 GenerateEnemyEntries();
             }
@@ -103,8 +117,8 @@ namespace SRTPluginProviderRE2
         {
             if (PointerEnemyEntries == null) // Enter if the pointer table is null (first run) or the size does not match.
             {
-                PointerEnemyEntries = new MultilevelPointer[32]; // Create a new enemy pointer table array with the detected size.
-                for (int i = 0; i < PointerEnemyEntries.Length; ++i) // Loop through and create all of the pointers for the table.
+                PointerEnemyEntries = new MultilevelPointer[MAX_ENTITES]; // Create a new enemy pointer table array with the detected size.
+                for (int i = 0; i < MAX_ENTITES; ++i) // Loop through and create all of the pointers for the table.
                     PointerEnemyEntries[i] = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressEnemies), 0x80 + (i * 0x08), 0x88, 0x18, 0x1A0);
             }
         }
@@ -114,110 +128,48 @@ namespace SRTPluginProviderRE2
         /// </summary>
         internal void UpdatePointers()
         {
+            PointerCharacter.UpdatePointers();
             PointerIGT.UpdatePointers();
             PointerRank.UpdatePointers();
             PointerPlayerHP.UpdatePointers();
             PointerPlayerPoison.UpdatePointers();
 
-            for (int i = 0; i < PointerInventoryEntries.Length; ++i)
+            for (int i = 0; i < MAX_ITEMS; ++i)
                 PointerInventoryEntries[i].UpdatePointers();
 
             GenerateEnemyEntries(); // This has to be here for the next part.
-            for (int i = 0; i < PointerEnemyEntries.Length; ++i)
+            for (int i = 0; i < MAX_ENTITES; ++i)
                 PointerEnemyEntries[i].UpdatePointers();
         }
 
         internal unsafe IGameMemoryRE2 Refresh()
         {
             // IGT
-            fixed (long* p = &gameMemoryValues._igtRunningTimer)
-                PointerIGT.TryDerefLong(0x18, p);
-            fixed (long* p = &gameMemoryValues._igtCutsceneTimer)
-                PointerIGT.TryDerefLong(0x20, p);
-            fixed (long* p = &gameMemoryValues._igtMenuTimer)
-                PointerIGT.TryDerefLong(0x28, p);
-            fixed (long* p = &gameMemoryValues._igtPausedTimer)
-                PointerIGT.TryDerefLong(0x30, p);
+            gameMemoryValues._timer = PointerIGT.Deref<GameTimer>(0x18);
 
             // Player Info
-            fixed (int* p = &gameMemoryValues._playerMaxHealth)
-                PointerPlayerHP.TryDerefInt(0x54, p);
-            fixed (int* p = &gameMemoryValues._playerCurrentHealth)
-                PointerPlayerHP.TryDerefInt(0x58, p);
-            fixed (byte* p = &gameMemoryValues._playerPoisoned)
-                PointerPlayerPoison.TryDerefByte(0x258, p);
-            fixed (int* p = &gameMemoryValues._rank)
-                PointerRank.TryDerefInt(0x58, p);
-            fixed (float* p = &gameMemoryValues._rankScore)
-                PointerRank.TryDerefFloat(0x5C, p);
+            gameMemoryValues._playerCharacter = PointerCharacter.DerefInt(0x54);
+            gameMemoryValues._player = PointerPlayerHP.Deref<GamePlayer>(0x54);
+            gameMemoryValues._isPoisoned = PointerPlayerPoison.DerefByte(0x258);
+
+            gameMemoryValues._rankManager = PointerRank.Deref<GameRankManager>(0x58);
 
             // Inventory
-            if (gameMemoryValues._playerInventory == null)
-            {
-                gameMemoryValues._playerInventory = new InventoryEntry[20];
-                for (int i = 0; i < gameMemoryValues.PlayerInventory.Length; ++i)
-                {
-                    gameMemoryValues.PlayerInventory[i] = new InventoryEntry()
-                    {
-                        _slotPosition = -1,
-                        _data = new int[5]
-                        {
-                            0x00000000,
-                            unchecked((int)0xFFFFFFFF),
-                            0x00000000,
-                            0x00000000,
-                            0x01000000
-                        }
-                    };
-                }
-            }
-            for (int i = 0; i < PointerInventoryEntries.Length; ++i)
-            {
-                try
-                {
-                    fixed (long* p = &gameMemoryValues.PlayerInventory[i]._invDataOffset)
-                        PointerInventoryEntries[i].TryDerefLong(0x10, p);
-                    gameMemoryValues.PlayerInventory[i]._invDataOffset -= PointerInventoryEntries[i].Address.ToInt64();
-
-                    fixed (int* p = &gameMemoryValues.PlayerInventory[i]._slotPosition)
-                        PointerInventoryEntries[i].TryDerefInt(0x28, p);
-                    fixed (int* p = &gameMemoryValues.PlayerInventory[i]._data[0])
-                        PointerInventoryEntries[i].TryDerefByteArray((int)gameMemoryValues.PlayerInventory[i]._invDataOffset + 0x10, 20, (byte*)p);
-                }
-                catch
-                {
-                    fixed (int* p = &gameMemoryValues.PlayerInventory[i]._slotPosition)
-                        PointerInventoryEntries[i].TryDerefInt(0x28, p);
-                    gameMemoryValues.PlayerInventory[i]._data = new int[5]
-                    {
-                        0x00000000,
-                        unchecked((int)0xFFFFFFFF),
-                        0x00000000,
-                        0x00000000,
-                        0x01000000
-                    };
-                }
-            }
+            for (int i = 0; i < MAX_ITEMS; ++i)
+                gameMemoryValues.PlayerInventory[i] = PointerInventoryEntries[i].Deref<GameInventoryEntry>(0x0);
 
             // Enemy HP
             GenerateEnemyEntries();
-            if (gameMemoryValues._enemyHealth == null)
-            {
-                gameMemoryValues._enemyHealth = new EnemyHP[32];
-                for (int i = 0; i < gameMemoryValues._enemyHealth.Length; ++i)
-                    gameMemoryValues._enemyHealth[i] = new EnemyHP();
-            }
-            for (int i = 0; i < gameMemoryValues._enemyHealth.Length; ++i)
+            for (int i = 0; i < MAX_ENTITES; ++i)
             {
                 try
                 {
                     // Check to see if the pointer is currently valid. It can become invalid when rooms are changed.
                     if (PointerEnemyEntries[i].Address != IntPtr.Zero)
                     {
-                        fixed (int* p = &gameMemoryValues.EnemyHealth[i]._maximumHP)
-                            PointerEnemyEntries[i].TryDerefInt(0x54, p);
-                        fixed (int* p = &gameMemoryValues.EnemyHealth[i]._currentHP)
-                            PointerEnemyEntries[i].TryDerefInt(0x58, p);
+                        GamePlayer enemy = PointerEnemyEntries[i].Deref<GamePlayer>(0x54);
+                        gameMemoryValues.EnemyHealth[i]._maximumHP = enemy.MaxHP;
+                        gameMemoryValues.EnemyHealth[i]._currentHP = enemy.CurrentHP;
                     }
                     else
                     {

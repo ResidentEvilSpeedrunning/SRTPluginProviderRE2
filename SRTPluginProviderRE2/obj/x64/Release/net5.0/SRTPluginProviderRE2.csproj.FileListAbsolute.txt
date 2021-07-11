@@ -1,0 +1,15 @@
+C:\Users\video\source\repos\ResidentEvilSpeedrunning\SRTPluginProviderRE2\SRTPluginProviderRE2\bin\x64\Release\net5.0\SRTPluginProviderRE2.deps.json
+C:\Users\video\source\repos\ResidentEvilSpeedrunning\SRTPluginProviderRE2\SRTPluginProviderRE2\bin\x64\Release\net5.0\SRTPluginProviderRE2.dll
+C:\Users\video\source\repos\ResidentEvilSpeedrunning\SRTPluginProviderRE2\SRTPluginProviderRE2\bin\x64\Release\net5.0\ref\SRTPluginProviderRE2.dll
+C:\Users\video\source\repos\ResidentEvilSpeedrunning\SRTPluginProviderRE2\SRTPluginProviderRE2\bin\x64\Release\net5.0\SRTPluginProviderRE2.pdb
+C:\Users\video\source\repos\ResidentEvilSpeedrunning\SRTPluginProviderRE2\SRTPluginProviderRE2\bin\x64\Release\net5.0\ProcessMemory64.dll
+C:\Users\video\source\repos\ResidentEvilSpeedrunning\SRTPluginProviderRE2\SRTPluginProviderRE2\bin\x64\Release\net5.0\ProcessMemory64.pdb
+C:\Users\video\source\repos\ResidentEvilSpeedrunning\SRTPluginProviderRE2\SRTPluginProviderRE2\obj\x64\Release\net5.0\SRTPluginProviderRE2.csproj.AssemblyReference.cache
+C:\Users\video\source\repos\ResidentEvilSpeedrunning\SRTPluginProviderRE2\SRTPluginProviderRE2\obj\x64\Release\net5.0\SRTPluginProviderRE2.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\video\source\repos\ResidentEvilSpeedrunning\SRTPluginProviderRE2\SRTPluginProviderRE2\obj\x64\Release\net5.0\SRTPluginProviderRE2.AssemblyInfoInputs.cache
+C:\Users\video\source\repos\ResidentEvilSpeedrunning\SRTPluginProviderRE2\SRTPluginProviderRE2\obj\x64\Release\net5.0\SRTPluginProviderRE2.AssemblyInfo.cs
+C:\Users\video\source\repos\ResidentEvilSpeedrunning\SRTPluginProviderRE2\SRTPluginProviderRE2\obj\x64\Release\net5.0\SRTPluginProviderRE2.csproj.CoreCompileInputs.cache
+C:\Users\video\source\repos\ResidentEvilSpeedrunning\SRTPluginProviderRE2\SRTPluginProviderRE2\obj\x64\Release\net5.0\SRTPluginProviderRE2.csproj.CopyComplete
+C:\Users\video\source\repos\ResidentEvilSpeedrunning\SRTPluginProviderRE2\SRTPluginProviderRE2\obj\x64\Release\net5.0\SRTPluginProviderRE2.dll
+C:\Users\video\source\repos\ResidentEvilSpeedrunning\SRTPluginProviderRE2\SRTPluginProviderRE2\obj\x64\Release\net5.0\ref\SRTPluginProviderRE2.dll
+C:\Users\video\source\repos\ResidentEvilSpeedrunning\SRTPluginProviderRE2\SRTPluginProviderRE2\obj\x64\Release\net5.0\SRTPluginProviderRE2.pdb
