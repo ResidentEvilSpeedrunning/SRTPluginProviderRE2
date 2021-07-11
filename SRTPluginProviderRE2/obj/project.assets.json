@@ -38,7 +38,7 @@
         "type": "project",
         "framework": ".NETStandard,Version=v2.1",
         "dependencies": {
-          "System.Text.Json": "4.7.2"
+          "System.Text.Json": "5.0.2"
         },
         "compile": {
           "bin/placeholder/SRTPluginBase.dll": {}
@@ -116,7 +116,7 @@
     "C:\\Users\\video\\.nuget\\packages\\": {}
   },
   "project": {
-    "version": "1.1.2.1",
+    "version": "1.1.2.2",
     "restore": {
       "projectUniqueName": "C:\\Users\\video\\source\\repos\\ResidentEvilSpeedrunning\\SRTPluginProviderRE2\\SRTPluginProviderRE2\\SRTPluginProviderRE2.csproj",
       "projectName": "SRTPluginProviderRE2",
