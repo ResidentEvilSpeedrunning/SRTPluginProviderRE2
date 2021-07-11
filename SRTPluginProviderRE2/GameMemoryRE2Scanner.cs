@@ -57,7 +57,7 @@ namespace SRTPluginProviderRE2
                 BaseAddress = NativeWrappers.GetProcessBaseAddress(pid, PInvoke.ListModules.LIST_MODULES_64BIT); // Bypass .NET's managed solution for getting this and attempt to get this info ourselves via PInvoke since some users are getting 299 PARTIAL COPY when they seemingly shouldn't.
 
                 // Setup the pointers.
-                PointerIGT = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressIGT), 0x2E0, 0x218, 0x610, 0x710, 0x60);
+                PointerIGT = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressIGT), 0x60);
                 PointerRank = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressRank));
                 PointerCharacter = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressPlayerInfo), 0x50, 0x88);
                 PointerPlayerHP = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressPlayerInfo), 0x50, 0x20);
@@ -86,7 +86,7 @@ namespace SRTPluginProviderRE2
                 case GameVersion.RE2_WW_20210201_1:
                     {
                         // pointerAddress
-                        pointerAddressIGT = 0x07097038;
+                        pointerAddressIGT = 0x0709D240;
                         pointerAddressRank = 0x070A6AA0;
                         pointerAddressPlayerInfo = 0x070A0948; // HP, Poison, Inv.
                         pointerAddressEnemies = 0x07095238;
