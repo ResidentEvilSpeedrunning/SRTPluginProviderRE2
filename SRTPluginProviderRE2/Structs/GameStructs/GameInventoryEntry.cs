@@ -3,15 +3,14 @@ using System.Runtime.InteropServices;
 
 namespace SRTPluginProviderRE2.Structs.GameStructs
 {
-    [StructLayout(LayoutKind.Explicit, Pack = 1, Size = 0x84)]
+    [StructLayout(LayoutKind.Explicit, Pack = 1, Size = 0x24)]
 
     public struct GameInventoryEntry
     {
-        [FieldOffset(0x28)] private int slotPosition;
-        [FieldOffset(0x70)] private int itemID;
-        [FieldOffset(0x74)] private int weaponID;
-        [FieldOffset(0x78)] private int attachments;
-        [FieldOffset(0x80)] private int quantity;
+        [FieldOffset(0x10)] private int itemID;
+        [FieldOffset(0x14)] private int weaponID;
+        [FieldOffset(0x18)] private int attachments;
+        [FieldOffset(0x20)] private int quantity;
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public string _DebuggerDisplay
@@ -19,15 +18,14 @@ namespace SRTPluginProviderRE2.Structs.GameStructs
             get
             {
                 if (IsItem)
-                    return string.Format("[#{0}] Item {1} Quantity {2}", SlotPosition, ItemID, Quantity);
+                    return string.Format("Item {0} Quantity {1}", ItemID, Quantity);
                 else if (IsWeapon)
-                    return string.Format("[#{0}] Weapon {1} Quantity {2} Attachments {3}", SlotPosition, WeaponID, Quantity, Attachments);
+                    return string.Format("Weapon {0} Quantity {1} Attachments {2}", WeaponID, Quantity, Attachments);
                 else
-                    return string.Format("[#{0}] Empty Slot", SlotPosition);
+                    return string.Format("Empty Slot");
             }
         }
 
-        public int SlotPosition => slotPosition;
         public ItemEnumeration ItemID => (ItemEnumeration)itemID;
         public WeaponEnumeration WeaponID => (WeaponEnumeration)weaponID;
         public AttachmentsFlag Attachments => (AttachmentsFlag)attachments;

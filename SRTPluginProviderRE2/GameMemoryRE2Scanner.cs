@@ -169,6 +169,7 @@ namespace SRTPluginProviderRE2
                 gameMemoryValues.PlayerInventory[i].ItemID = entry.ItemID;
                 gameMemoryValues.PlayerInventory[i].WeaponID = entry.WeaponID;
                 gameMemoryValues.PlayerInventory[i].Attachments = entry.Attachments;
+                gameMemoryValues.PlayerInventory[i].Quantity = entry.Quantity;
             }   
 
             // Enemy HP
