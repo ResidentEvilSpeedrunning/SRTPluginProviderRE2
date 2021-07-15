@@ -22,7 +22,9 @@ namespace SRTPluginProviderRE2
 
         GameRankManager RankManager { get; }
 
-        GameInventoryEntry[] PlayerInventory { get; }
+        int PlayerInventoryCount { get; }
+
+        InventoryEntry[] PlayerInventory { get; }
 
         EnemyHP[] EnemyHealth { get; }
 

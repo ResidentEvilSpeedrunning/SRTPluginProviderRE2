@@ -32,8 +32,10 @@ namespace SRTPluginProviderRE2
         public GameRankManager RankManager { get => _rankManager; }
         internal GameRankManager _rankManager;
 
-        public GameInventoryEntry[] PlayerInventory { get => _playerInventory; }
-        internal GameInventoryEntry[] _playerInventory;
+        public int PlayerInventoryCount { get => _playerInventoryCount; }
+        internal int _playerInventoryCount;
+        public InventoryEntry[] PlayerInventory { get => _playerInventory; }
+        internal InventoryEntry[] _playerInventory;
 
         public EnemyHP[] EnemyHealth { get => _enemyHealth; }
         internal EnemyHP[] _enemyHealth;
