@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace SRTPluginProviderRE2.Structs.GameStructs
 {
-    [StructLayout(LayoutKind.Explicit, Pack = 1, Size = 0x74)]
+    [StructLayout(LayoutKind.Explicit, Pack = 1, Size = 0x84)]
 
     public struct GameInventoryEntry
     {
@@ -32,8 +32,8 @@ namespace SRTPluginProviderRE2.Structs.GameStructs
         public WeaponEnumeration WeaponID => (WeaponEnumeration)weaponID;
         public AttachmentsFlag Attachments => (AttachmentsFlag)attachments;
         public int Quantity => quantity;
-        public bool IsItem => ItemID != ItemEnumeration.None && (WeaponID == WeaponEnumeration.None || WeaponID == 0);
-        public bool IsWeapon => ItemID == ItemEnumeration.None && WeaponID != WeaponEnumeration.None && WeaponID != 0;
+        public bool IsItem => ItemID != ItemEnumeration.None && WeaponID == WeaponEnumeration.None;
+        public bool IsWeapon => ItemID == ItemEnumeration.None && WeaponID != WeaponEnumeration.None;
         public bool IsEmptySlot => !IsItem && !IsWeapon;
     }
 }
