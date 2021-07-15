@@ -30,6 +30,7 @@ namespace SRTPluginProviderRE2.Structs
 
         public bool IsTrigger => MaximumHP == 1 && CurrentHP == 1; // Some triggers load in as enemies as 1/1 hp. We're excluding that by checking to make sure max hp is greater than 1 rather than greater than 0.
         public bool IsAlive => !IsTrigger && MaximumHP > 0 && CurrentHP > 0 && CurrentHP <= MaximumHP;
+        public bool IsDamaged => MaximumHP > 0 && CurrentHP > 0 && CurrentHP < MaximumHP;
         public float Percentage => ((IsAlive) ? (float)CurrentHP / (float)MaximumHP : 0f);
     }
 }

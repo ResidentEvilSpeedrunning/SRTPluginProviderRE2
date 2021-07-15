@@ -30,10 +30,12 @@ namespace SRTPluginProviderRE2
         private MultilevelPointer PointerCharacter { get; set; }
         private MultilevelPointer PointerPlayerHP { get; set; }
         private MultilevelPointer PointerPlayerPoison { get; set; }
+        private MultilevelPointer PointerInventoryCount { get; set; }
         private MultilevelPointer[] PointerInventoryEntries { get; set; }
+        private MultilevelPointer[] PointerInventorySlots { get; set; }
         private MultilevelPointer[] PointerEnemyEntries { get; set; }
 
-        private GameInventoryEntry EmptySlot = new GameInventoryEntry();
+        private InventoryEntry EmptySlot = new InventoryEntry();
 
         internal GameMemoryRE2Scanner(Process process = null)
         {
@@ -63,11 +65,14 @@ namespace SRTPluginProviderRE2
                 PointerPlayerHP = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressPlayerInfo), 0x50, 0x20);
                 PointerPlayerPoison = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressPlayerInfo), 0x50, 0x20, 0xF8);
 
+                PointerInventoryCount = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressPlayerInfo), 0x50);
                 PointerInventoryEntries = new MultilevelPointer[MAX_ITEMS];
-                gameMemoryValues._playerInventory = new GameInventoryEntry[MAX_ITEMS];
+                PointerInventorySlots = new MultilevelPointer[MAX_ITEMS];
+                gameMemoryValues._playerInventory = new InventoryEntry[MAX_ITEMS];
                 for (int i = 0; i < MAX_ITEMS; ++i)
                 {
-                    PointerInventoryEntries[i] = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressPlayerInfo), 0x50, 0x98, 0x10, 0x20 + (i * 0x08), 0x18);
+                    PointerInventoryEntries[i] = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressPlayerInfo), 0x50, 0x98, 0x10, 0x20 + (i * 0x08), 0x18, 0x10);
+                    PointerInventorySlots[i] = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressPlayerInfo), 0x50, 0x98, 0x10, 0x20 + (i * 0x08), 0x18);
                     gameMemoryValues.PlayerInventory[i] = EmptySlot;
                 }
 
@@ -134,6 +139,7 @@ namespace SRTPluginProviderRE2
             PointerPlayerHP.UpdatePointers();
             PointerPlayerPoison.UpdatePointers();
 
+            PointerInventoryCount.UpdatePointers();
             for (int i = 0; i < MAX_ITEMS; ++i)
                 PointerInventoryEntries[i].UpdatePointers();
 
@@ -155,8 +161,15 @@ namespace SRTPluginProviderRE2
             gameMemoryValues._rankManager = PointerRank.Deref<GameRankManager>(0x58);
 
             // Inventory
+            gameMemoryValues._playerInventoryCount = PointerInventoryCount.DerefInt(0x90);
             for (int i = 0; i < MAX_ITEMS; ++i)
-                gameMemoryValues.PlayerInventory[i] = PointerInventoryEntries[i].Deref<GameInventoryEntry>(0x0);
+            {
+                var entry = PointerInventoryEntries[i].Deref<GameInventoryEntry>(0x0);
+                gameMemoryValues.PlayerInventory[i].SlotPosition = PointerInventorySlots[i].DerefInt(0x28);
+                gameMemoryValues.PlayerInventory[i].ItemID = entry.ItemID;
+                gameMemoryValues.PlayerInventory[i].WeaponID = entry.WeaponID;
+                gameMemoryValues.PlayerInventory[i].Attachments = entry.Attachments;
+            }   
 
             // Enemy HP
             GenerateEnemyEntries();
