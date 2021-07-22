@@ -141,7 +141,10 @@ namespace SRTPluginProviderRE2
 
             PointerInventoryCount.UpdatePointers();
             for (int i = 0; i < MAX_ITEMS; ++i)
+            {
                 PointerInventoryEntries[i].UpdatePointers();
+                PointerInventorySlots[i].UpdatePointers();
+            }
 
             GenerateEnemyEntries(); // This has to be here for the next part.
             for (int i = 0; i < MAX_ENTITES; ++i)
