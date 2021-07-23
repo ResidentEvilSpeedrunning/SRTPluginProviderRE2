@@ -17,8 +17,8 @@ namespace SRTPluginProviderRE2.Structs.GameStructs
         {
             get =>
                 !IsAlive ? PlayerState.Dead :
-                Percentage >= 0.66f ? PlayerState.Fine :
-                Percentage >= 0.33f ? PlayerState.Caution :
+                CurrentHP >= 801 ? PlayerState.Fine :
+                CurrentHP >= 401 ? PlayerState.Caution :
                 PlayerState.Danger;
         }
     }
