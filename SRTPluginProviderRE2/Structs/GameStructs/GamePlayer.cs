@@ -21,6 +21,8 @@ namespace SRTPluginProviderRE2.Structs.GameStructs
                 CurrentHP >= 401 ? PlayerState.Caution :
                 PlayerState.Danger;
         }
+
+        public string CurrentHealthState => HealthState.ToString();
     }
 
     public enum PlayerState
