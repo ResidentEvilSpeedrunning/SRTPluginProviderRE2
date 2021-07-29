@@ -89,13 +89,13 @@ namespace SRTPluginProviderRE2
             switch (version)
             {
                 case GameVersion.RE2_WW_20210201_1:
+                case GameVersion.RE2_CEROZ_20210201_1:
                     {
                         // pointerAddress
                         pointerAddressIGT = 0x0709D240;
                         pointerAddressRank = 0x070A6AA0;
                         pointerAddressPlayerInfo = 0x070A0948; // HP, Poison, Inv.
                         pointerAddressEnemies = 0x07095238;
-
                         return true;
                     }
 
@@ -106,7 +106,15 @@ namespace SRTPluginProviderRE2
                         pointerAddressRank = 0x070A7C88;
                         pointerAddressPlayerInfo = 0x070A17E0; // HP, Poison, Inv.
                         pointerAddressEnemies = 0x070960E0;
-
+                        return true;
+                    }
+                default:
+                    {
+                        // pointerAddress
+                        pointerAddressIGT = 0x0709D240;
+                        pointerAddressRank = 0x070A6AA0;
+                        pointerAddressPlayerInfo = 0x070A0948; // HP, Poison, Inv.
+                        pointerAddressEnemies = 0x07095238;
                         return true;
                     }
             }
