@@ -88,6 +88,16 @@ namespace SRTPluginProviderRE2
         {
             switch (version)
             {
+                case GameVersion.RE2_WW_20220613_1:
+                    {
+                        // pointerAddress
+                        pointerAddressIGT = 0x091689E0;
+                        pointerAddressRank = 0x0913F000;
+                        pointerAddressPlayerInfo = 0x09160F30; // HP, Poison, Inv.
+                        pointerAddressEnemies = 0x0913DC70;
+                        return true;
+                    }
+
                 case GameVersion.RE2_WW_20211217_1:
                     {
                         // pointerAddress
