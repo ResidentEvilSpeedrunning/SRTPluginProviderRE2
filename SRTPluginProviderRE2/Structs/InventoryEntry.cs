@@ -16,7 +16,7 @@ namespace SRTPluginProviderRE2.Structs
                 if (IsItem)
                     return string.Format("[#{0}] Item {1} Quantity {2}", SlotPosition, ItemID, Quantity);
                 else if (IsWeapon)
-                    return string.Format("[#{0}] Weapon {1} Quantity {2} Attachments {3}", SlotPosition, WeaponID, Quantity, Attachments);
+                    return string.Format("[#{0}] Weapon {1} Quantity {2} Attachments {3}", SlotPosition, WeaponID, Quantity, Attachments, BulletID);
                 else
                     return string.Format("[#{0}] Empty Slot", SlotPosition);
             }
@@ -26,6 +26,7 @@ namespace SRTPluginProviderRE2.Structs
         public ItemEnumeration ItemID { get; set; }
         public WeaponEnumeration WeaponID { get; set; }
         public AttachmentsFlag Attachments { get; set; }
+        public int BulletID { get; set; }
         public int Quantity { get; set; }
         public bool IsItem => ItemID != ItemEnumeration.None && (WeaponID == WeaponEnumeration.None || WeaponID == 0);
         public bool IsWeapon => ItemID == ItemEnumeration.None && WeaponID != WeaponEnumeration.None && WeaponID != 0;

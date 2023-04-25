@@ -8,6 +8,8 @@ namespace SRTPluginProviderRE2.Structs.GameStructs
     {
         [FieldOffset(0x0)] private int maxHP;
         [FieldOffset(0x4)] private int currentHP;
+        [FieldOffset(0x8)] private bool iFrames;
+        [FieldOffset(0x9)] private bool noDamage;
 
         public int CurrentHP => currentHP;
         public int MaxHP => maxHP;
