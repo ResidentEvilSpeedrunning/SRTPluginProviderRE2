@@ -10,6 +10,7 @@ namespace SRTPluginProviderRE2.Structs.GameStructs
         [FieldOffset(0x10)] private int itemID;
         [FieldOffset(0x14)] private int weaponID;
         [FieldOffset(0x18)] private int attachments;
+        [FieldOffset(0x1C)] private int bulletId;
         [FieldOffset(0x20)] private int quantity;
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -20,7 +21,7 @@ namespace SRTPluginProviderRE2.Structs.GameStructs
                 if (IsItem)
                     return string.Format("Item {0} Quantity {1}", ItemID, Quantity);
                 else if (IsWeapon)
-                    return string.Format("Weapon {0} Quantity {1} Attachments {2}", WeaponID, Quantity, Attachments);
+                    return string.Format("Weapon {0} Quantity {1} Attachments {2}", WeaponID, Quantity, Attachments, BulletID);
                 else
                     return string.Format("Empty Slot");
             }
@@ -30,6 +31,7 @@ namespace SRTPluginProviderRE2.Structs.GameStructs
         public WeaponEnumeration WeaponID => (WeaponEnumeration)weaponID;
         public AttachmentsFlag Attachments => (AttachmentsFlag)attachments;
         public int Quantity => quantity;
+        public int BulletID => bulletId;
         public bool IsItem => ItemID != ItemEnumeration.None && WeaponID == WeaponEnumeration.None;
         public bool IsWeapon => ItemID == ItemEnumeration.None && WeaponID != WeaponEnumeration.None;
         public bool IsEmptySlot => !IsItem && !IsWeapon;

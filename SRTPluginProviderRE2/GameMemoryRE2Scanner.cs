@@ -71,8 +71,8 @@ namespace SRTPluginProviderRE2
                 gameMemoryValues._playerInventory = new InventoryEntry[MAX_ITEMS];
                 for (int i = 0; i < MAX_ITEMS; ++i)
                 {
-                    PointerInventoryEntries[i] = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressPlayerInfo), 0x50, 0x98, 0x10, 0x20 + (i * 0x08), 0x18, 0x10);
-                    PointerInventorySlots[i] = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressPlayerInfo), 0x50, 0x98, 0x10, 0x20 + (i * 0x08), 0x18);
+                    PointerInventoryEntries[i] = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressPlayerInfo), 0x50, 0x10, 0x20, 0x120, 0x98, 0x10, 0x20 + (i * 0x08), 0x18, 0x10);
+                    PointerInventorySlots[i] = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressPlayerInfo), 0x50, 0x10, 0x20, 0x120, 0x98, 0x10, 0x20 + (i * 0x08), 0x18);
                     gameMemoryValues.PlayerInventory[i] = EmptySlot;
                 }
 
@@ -218,6 +218,7 @@ namespace SRTPluginProviderRE2
                 gameMemoryValues.PlayerInventory[i].ItemID = entry.ItemID;
                 gameMemoryValues.PlayerInventory[i].WeaponID = entry.WeaponID;
                 gameMemoryValues.PlayerInventory[i].Attachments = entry.Attachments;
+                gameMemoryValues.PlayerInventory[i].BulletID = entry.BulletID;
                 gameMemoryValues.PlayerInventory[i].Quantity = entry.Quantity;
             }   
 
