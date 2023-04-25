@@ -62,8 +62,8 @@ namespace SRTPluginProviderRE2
                 PointerIGT = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressIGT), 0x60);
                 PointerRank = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressRank));
                 PointerCharacter = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressPlayerInfo), 0x50, 0x88);
-                PointerPlayerHP = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressPlayerInfo), 0x50, 0x20);
-                PointerPlayerPoison = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressPlayerInfo), 0x50, 0x88);
+                PointerPlayerHP = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressPlayerInfo), 0x50, 0x10, 0x20, 0x230);
+                PointerPlayerPoison = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressPlayerInfo), 0x78, 0x38, 0x10, 0x28);
 
                 PointerInventoryCount = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressPlayerInfo), 0x50);
                 PointerInventoryEntries = new MultilevelPointer[MAX_ITEMS];
@@ -88,6 +88,14 @@ namespace SRTPluginProviderRE2
         {
             switch (version)
             {
+                case GameVersion.RE2_WW_20230418_1:
+                    {
+                        pointerAddressIGT = 0x091AEC78;
+                        pointerAddressRank = 0x09184EC0;
+                        pointerAddressPlayerInfo = 0x091AD1F0; // HP, Poison, Inv.
+                        pointerAddressEnemies = 0x091A6A08;
+                        return true;
+                    }
                 case GameVersion.RE2_WW_20221006_1:
                     {
                         // pointerAddress
@@ -162,7 +170,7 @@ namespace SRTPluginProviderRE2
             {
                 PointerEnemyEntries = new MultilevelPointer[MAX_ENTITES]; // Create a new enemy pointer table array with the detected size.
                 for (int i = 0; i < MAX_ENTITES; ++i) // Loop through and create all of the pointers for the table.
-                    PointerEnemyEntries[i] = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressEnemies), 0x80 + (i * 0x08), 0x88, 0x18, 0x1A0);
+                    PointerEnemyEntries[i] = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressEnemies), 0x58, 0x10, 0x20 + (i * 0x08), 0x218, 0xB8);
             }
         }
 
@@ -197,7 +205,7 @@ namespace SRTPluginProviderRE2
             // Player Info
             gameMemoryValues._playerCharacter = PointerCharacter.DerefInt(0x54);
             gameMemoryValues._player = PointerPlayerHP.Deref<GamePlayer>(0x54);
-            gameMemoryValues._isPoisoned = PointerPlayerPoison.DerefByte(0x258);
+            gameMemoryValues._isPoisoned = PointerPlayerPoison.DerefByte(0x40);
 
             gameMemoryValues._rankManager = PointerRank.Deref<GameRankManager>(0x58);
 
