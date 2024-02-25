@@ -12,28 +12,37 @@ namespace SRTPluginProviderRE2
 
         GameTimer Timer { get; }
 
-        CharacterEnumeration PlayerCharacter { get; }
+        RankManager RankManager { get; }
 
-        GamePlayer Player { get; }
+        Player PlayerManager { get; }
 
-        string PlayerName { get; }
+        int InventoryCount { get; }
 
-        bool IsPoisoned { get; }
+        InventoryEntry[] Items { get; }
+        int ShortcutCount { get; }
 
-        GameRankManager RankManager { get; }
+        InventoryEntry[] Shortcuts { get; }
 
-        int PlayerInventoryCount { get; }
+        int SubShortcutCount { get; }
 
-        InventoryEntry[] PlayerInventory { get; }
+        InventoryEntry[] SubShortcuts { get; }
 
-        EnemyHP[] EnemyHealth { get; }
+        PrimitiveItem MainSlot { get; }
 
-        long IGTCalculated { get; }
+        PrimitiveItem SubSlot { get; }
 
-        long IGTCalculatedTicks { get; }
+        int EnemyCount { get; }
 
-        TimeSpan IGTTimeSpan { get; }
+        Enemy[] Enemies { get; }
 
-        string IGTFormattedString { get; }
+        int EnemyKillCount { get; }
+
+        int LocationID { get; }
+
+        string LocationName { get; }
+
+        int MapID { get; }
+
+        string MapName { get; }
     }
 }
