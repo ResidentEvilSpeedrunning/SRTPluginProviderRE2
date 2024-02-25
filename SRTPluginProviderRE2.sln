@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SRTPluginBase", "..\SRTHost\SRTPluginBase\SRTPluginBase.csproj", "{8A136F88-A661-40E7-AE8E-70D0A40F3A70}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SRTPluginBase", "..\..\SpeedRunTool\SRTHost\SRTPluginBase\SRTPluginBase.csproj", "{8A136F88-A661-40E7-AE8E-70D0A40F3A70}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SRTPluginProviderRE2", "SRTPluginProviderRE2\SRTPluginProviderRE2.csproj", "{F60B024A-E3AD-47E8-9056-6A86B3732B95}"
 EndProject
