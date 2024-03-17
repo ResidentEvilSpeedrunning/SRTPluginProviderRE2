@@ -1,0 +1,16 @@
+{
+    "Contributors": [
+        "Squirrelies",
+        "VideoGameRoulette"
+    ],
+    "Releases": [
+        {
+            "Version": "2.0.2.0",
+            "DownloadURL": "https://github.com/SpeedrunTooling/SRTPluginProviderRE2/releases/download/2.0.2.0/SRTPluginProviderRE2-v2.0.2.0.zip"
+        },
+        {
+            "Version": "2.0.0.8",
+            "DownloadURL": "https://github.com/SpeedrunTooling/SRTPluginProviderRE2/releases/download/2.0.0.8/SRTPluginProviderRE2-v2.0.0.8.zip"
+        }
+    ]
+}
