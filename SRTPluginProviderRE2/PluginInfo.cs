@@ -1,4 +1,4 @@
-﻿using SRTPluginBase;
+﻿using SRTPluginBase.Interfaces;
 using System;
 
 namespace SRTPluginProviderRE2
@@ -11,16 +11,20 @@ namespace SRTPluginProviderRE2
 
         public string Author => "Squirrelies";
 
-        public Uri MoreInfoURL => new Uri("https://github.com/SpeedrunTooling/SRTPluginProviderRE2");
+        public Uri MoreInfoURL => new Uri("https://github.com/Squirrelies/SRTPluginProducerRE2");
 
-        public int VersionMajor => assemblyVersion.Major;
+        public int VersionMajor => assemblyVersion?.Major ?? 0;
 
-        public int VersionMinor => assemblyVersion.Minor;
+        public int VersionMinor => assemblyVersion?.Minor ?? 0;
 
-        public int VersionBuild => assemblyVersion.Build;
+        public int VersionBuild => assemblyVersion?.Build ?? 0;
 
-        public int VersionRevision => assemblyVersion.Revision;
+        public int VersionRevision => assemblyVersion?.Revision ?? 0;
 
-        private Version assemblyVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+        public Version Version => assemblyVersion ?? new();
+
+        private readonly Version? assemblyVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+
+        public bool Equals(IPluginInfo? other) => Equals(this, other);
     }
 }
