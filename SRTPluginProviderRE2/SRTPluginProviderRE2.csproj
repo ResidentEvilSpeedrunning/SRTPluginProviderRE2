@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <Platforms>x64</Platforms>
     <Authors>SpeedrunTooling</Authors>
@@ -10,12 +10,12 @@
     <Copyright>Copyright © 2024 $(Authors)</Copyright>
     <Product>Resident Evil 2 (2019) Memory Provider Plugin</Product>
     <Description>A provider plugin for the SRT Host to provide memory values to other plugins.</Description>
-    <Version>2.0.2.0</Version>
-    <FileVersion>2.0.2.0</FileVersion>
-    <AssemblyVersion>3.0.0.0</AssemblyVersion>
+    <Version>4.0.0.0</Version>
+    <FileVersion>4.0.0.0</FileVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
     <DebugType>embedded</DebugType>
     <!-- netcoreapp3.1 had to be hardcoded here because this project reports $(TargetFramework) as netstandard2.0 (rightfully so) and I am not sure how this project's csproj can auto-detect another project's framework version to copy it to the appropriate folder so we're just... hardcoding this. -->
-	<CopyDestionationPath>$(SolutionDir)..\..\SpeedRunTool\SRTHost\SRTHost\bin\$(Configuration)\net5.0-windows\plugins</CopyDestionationPath>
+	<CopyDestionationPath>$(SolutionDir)..\..\SpeedRunTool\SRTHost\src\SRTHost\bin\$(Configuration)\net8.0-windows\plugins</CopyDestionationPath>
 	<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
@@ -40,10 +40,37 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\SpeedRunTool\SRTHost\SRTPluginBase\SRTPluginBase.csproj">
-      <Private>false</Private>
-      <ExcludeAssets>runtime</ExcludeAssets>
-    </ProjectReference>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+	
+	<Choose>
+		<When Condition="'$(Configuration)'=='Debug'">
+			<ItemGroup>
+				<ProjectReference Include="..\..\..\SpeedRunTool\SRTPluginBase\src\SRTPluginBase\SRTPluginBase.csproj">
+					<Private>false</Private>
+					<ExcludeAssets>runtime</ExcludeAssets>
+				</ProjectReference>
+			</ItemGroup>
+		</When>
+		<Otherwise>
+			<ItemGroup>
+				<PackageReference Include="SRTPluginBase" Version="4.0.0-*">
+					<Private>false</Private>
+					<ExcludeAssets>runtime</ExcludeAssets>
+				</PackageReference>
+			</ItemGroup>
+		</Otherwise>
+	</Choose>
 
 </Project>
